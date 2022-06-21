@@ -1,0 +1,23 @@
+### Set up Logger Output Level and Output Destination ###Deug is more detailed. If set to info, the printed table data will not be displayed when it encounters a string. In addition, there is logfile.
+log4j.rootLogger=debug,stdout    
+    
+### Export log information to console ###     
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender     
+#log4j.appender.stdout.Target=System.err     
+log4j.appender.stdout.layout=org.apache.log4j.SimpleLayout     
+    
+### Export log information to files: jbit.log ###     
+#log4j.appender.logfile=org.apache.log4j.FileAppender     
+#log4j.appender.logfile.File=jbit.log     
+#log4j.appender.logfile.layout=org.apache.log4j.PatternLayout     
+#log4j.appender.logfile.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %F %p %m%n     
+    
+###Display the SQL statement section
+#log4j.logger.com.mybatis=DEBUG    
+#log4j.logger.com.mybatis.common.jdbc.SimpleDataSource=DEBUG     
+#log4j.logger.com.mybatis.common.jdbc.ScriptRunner=DEBUG     
+#log4j.logger.com.mybatis.sqlmap.engine.impl.SqlMapClientDelegate=DEBUG     
+#log4j.logger.java.sql.Connection=DEBUG    
+#log4j.logger.java.sql.Statement=DEBUG    
+#log4j.logger.java.sql.PreparedStatement=DEBUG    
+#log4j.logger.java.sql.ResultSet=DEBUG   

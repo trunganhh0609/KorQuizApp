@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="application.module.test.TestMapper">
+
+	<select id="get" parameterType="map" resultType="HashMap">
+		SELECT p.* from korq_question p
+	</select>
+	
+	<insert id="insertQuestion" parameterType="map" useGeneratedKeys="true"  keyProperty="QUESTION_ID">
+			INSERT INTO korq_question
+			(
+				QUESTION_TEXT,
+				QUESTION_TYPE
+			)
+			VALUES
+			(
+				#{QUESTION_TEXT},
+				#{QUESTION_TYPE}
+			)
+	</insert>
+	<insert id="insertAnswer" parameterType="map" useGeneratedKeys="true"  keyProperty="ANSWER_ID">
+			INSERT INTO korq_question_answer
+			(
+				QUESTION_ID,
+				ANSWER_TEXT,
+				ANSWER_CORRECT,
+				ANSWER_ORDINAL
+			)
+			VALUES
+			(
+				#{QUESTION_ID},
+				#{ANSWER_TEXT},
+				#{ANSWER_CORRECT},
+				#{ANSWER_ORDINAL}				
+			)
+	</insert>
+	<select id="randomTest" parameterType="map" resultType="HashMap">
+		SELECT kq.*
+		
+		FROM korq_question kq
+		INNER JOIN korq_question_answer kqa ON kq.QUESTION_ID = kqa.QUESTION_ID
+		
+		<where>
+			kq.QUESTION_TYPE = #{TEST_TYPE}
+		</where>
+		ORDER BY RAND()
+		LIMIT #{TEST_TOTAL_QUESTION}
+	</select>
+	
+	<select id="getAnswerByQuestion" parameterType="map" resultType="HashMap">
+		SELECT kqa.*
+		
+		FROM korq_question_answer kqa
+		
+		<where>
+			kqa.QUESTION_ID = #{QUESTION_ID}
+		</where>
+	</select>
+</mapper>
