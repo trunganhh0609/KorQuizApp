@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:quiz_app/Controller/Controller.dart';
+import 'package:quiz_app/Screen/PreResult.dart';
 import 'package:quiz_app/Screen/Result.dart';
 
 import 'Test.dart';
@@ -102,7 +103,7 @@ class _QuizState extends State<Quiz> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              Result(point * 10 / ctrl.questLst.length)));
+                              PreResult(point)));
                 },
               ),
             ],
@@ -127,7 +128,6 @@ class _QuizState extends State<Quiz> {
       }
     }
 
-    print(point.toString());
     if (time > 0) {
       return showDialog(
         context: context,
@@ -154,7 +154,7 @@ class _QuizState extends State<Quiz> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              Result(point * 10 / ctrl.questLst.length)));
+                              PreResult(point)));
                 },
               ),
             ],
@@ -283,13 +283,31 @@ class _QuizState extends State<Quiz> {
             Container(
               height: (MediaQuery.of(context).size.height -
                   appBar.preferredSize.height) *
-                  7.5 /
+                  6.5 /
                   10,
               padding: EdgeInsets.only(top: 20),
               child: PageView(controller: controller, children: makePage()),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    onPressed: (){
+                      controller.previousPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
+                    },
+                    child: Text("Câu hỏi trước")),
+                Container(
+                  width: MediaQuery.of(context).size.width/5,
+                ),
+                ElevatedButton(
+                    onPressed: (){
+                      controller.nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
+                    },
+                    child: Text("Câu hỏi tiếp"))
+              ],
+            ),
             Container(
-              margin: EdgeInsets.only(top: 5),
+              margin: EdgeInsets.only(top: 25),
               height: (MediaQuery.of(context).size.height -
                   appBar.preferredSize.height) *
                   0.5 /
@@ -299,7 +317,9 @@ class _QuizState extends State<Quiz> {
                   onPressed: () {
                     checkPoint();
                   }),
-            )
+            ),
+
+
           ],
         ),
 

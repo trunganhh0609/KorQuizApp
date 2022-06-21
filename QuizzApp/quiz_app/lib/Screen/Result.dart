@@ -5,10 +5,9 @@ import 'package:quiz_app/Controller/Controller.dart';
 import 'package:quiz_app/Screen/Home.dart';
 
 class Result extends StatelessWidget {
-  var point;
   final Controller ctrl = Get.put(Controller());
 
-  Result(this.point);
+  Result();
 
   makePage(BuildContext context) {
     var lstQuest = ctrl.questLst;
@@ -46,9 +45,13 @@ class Result extends StatelessWidget {
                           elevation: 0,
                           minimumSize: Size(
                               MediaQuery.of(context).size.width / 1.5, 55),
-                          primary: (lstAnswer[index].aNSWERCORRECT == 1.0)
-                              ? Colors.green
-                              : Colors.redAccent),
+                          primary:
+                          lstAnswer[index].aNSWERCORRECT == 1.0
+                                ? Colors.green
+                              : ctrl.answerTxt[i] == lstAnswer[index].aNSWERTEXT.toString() &&lstAnswer[index].aNSWERCORRECT != 1.0
+                                ? Colors.redAccent
+                                : Colors.white60
+                          ),
                       child: Row(
                         children: [
                           Text(
@@ -68,7 +71,7 @@ class Result extends StatelessWidget {
                                 Icons.check,
                                 color: Colors.white,
                               )
-                                  : Icon(Icons.close, color: Colors.white))
+                                  : Text(""))
                         ],
                       ),
                     ),
@@ -100,27 +103,37 @@ class Result extends StatelessWidget {
               Column(
                 children: [
                   Container(
-                      alignment: Alignment.center,
-                      height: (MediaQuery.of(context).size.height -
-                          appBar.preferredSize.height) *
-                          1 /
-                          10,
-                      child: Text("Điểm của bạn: $point",
-                          style: TextStyle(fontSize: 30, color: Colors.green))),
-                  Container(
                     height: (MediaQuery.of(context).size.height -
                         appBar.preferredSize.height) *
-                        6 /
+                        7 /
                         10,
                     padding: EdgeInsets.only(top: 20),
                     child: PageView(
                         controller: pageController, children: makePage(context)),
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                          onPressed: (){
+                            pageController.previousPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
+                          },
+                          child: Text("Câu hỏi trước")),
+                      Container(
+                        width: MediaQuery.of(context).size.width/5,
+                      ),
+                      ElevatedButton(
+                          onPressed: (){
+                            pageController.nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
+                          },
+                          child: Text("Câu hỏi tiếp"))
+                    ],
+                  ),
                   Container(
                     alignment: Alignment.center,
                     height: (MediaQuery.of(context).size.height -
                         appBar.preferredSize.height) *
-                        2 /
+                        1 /
                         10,
                     child: ElevatedButton(
                         onPressed: () {
