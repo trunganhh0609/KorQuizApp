@@ -126,7 +126,7 @@ class Result extends StatelessWidget {
                           onPressed: (){
                             pageController.nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
                           },
-                          child: Text("Câu hỏi tiếp"))
+                          child: Text("Câu hỏi tiếp "))
                     ],
                   ),
                   Container(
