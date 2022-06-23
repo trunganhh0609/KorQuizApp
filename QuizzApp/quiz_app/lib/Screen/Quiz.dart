@@ -6,6 +6,7 @@ import 'package:quiz_app/Controller/Controller.dart';
 import 'package:quiz_app/Screen/PreResult.dart';
 import 'package:quiz_app/Screen/Result.dart';
 
+import '../Widget/Background.dart';
 import 'Test.dart';
 
 class Quiz extends StatefulWidget {
@@ -13,21 +14,18 @@ class Quiz extends StatefulWidget {
   _QuizState createState() => _QuizState();
 }
 
-class _QuizState extends State<Quiz> {
+class _QuizState extends State<Quiz>{
   var ctrl = Get.put(Controller());
   var point = 0;
   Duration duration = Duration();
   Timer? timer;
   var time;
   var valProgress;
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
+
 
   @override
   void initState() {
+    super.initState();
     startTimer();
     print('point:$point');
     ctrl.count.clear();
@@ -37,42 +35,53 @@ class _QuizState extends State<Quiz> {
       ctrl.count.add("Null");
     }
 
-    super.initState();
+
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    timer?.cancel();
+    print("dispose");
   }
 
   void startTimer() {
-    switch (ctrl.questLst.length) {
-      case 10:
-        {
-          valProgress = time = 60 * 5;
-        }
-        break;
-      case 20:
-        {
-          valProgress = time = 60 * 20;
-        }
-        break;
-      case 50:
-        {
-          valProgress = time = 60 * 50;
-        }
-        break;
-      case 100:
-        {
-          valProgress = time = 60 * 100;
-        }
-        break;
-      case 200:
-        {
-          valProgress = time = 60 * 200;
-        }
-        break;
-      default:
-        {
-          print("This is default case");
-        }
-        break;
+    if(ctrl.timeSet.value == 0){
+      switch (ctrl.questLst.length) {
+        case 10:
+          {
+            valProgress = time = 60 * 5;
+          }
+          break;
+        case 20:
+          {
+            valProgress = time = 60 * 10;
+          }
+          break;
+        case 50:
+          {
+            valProgress = time = 60 * 25;
+          }
+          break;
+        case 100:
+          {
+            valProgress = time = 60 * 50;
+          }
+          break;
+        case 200:
+          {
+            valProgress = time = 60 * 100;
+          }
+          break;
+        default:
+          {
+            print("This is default case");
+          }
+          break;
+      }
+    }else{
+      valProgress = time = 60 * ctrl.timeSet.value;
     }
+
 
     timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
   }
@@ -96,14 +105,15 @@ class _QuizState extends State<Quiz> {
                 child: new Text("OK"),
                 onPressed: () {
                   var count = 0;
-                  Navigator.popUntil(context, (route) {
-                    return count++ == 2;
-                  });
-                  Navigator.push(
+                  // Navigator.popUntil(context, (route) {
+                  //   return count++ == 2;
+                  // });
+                  timer?.cancel();
+                  Navigator.pop(context);
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              PreResult(point)));
+                          builder: (context) => PreResult(point)));
                 },
               ),
             ],
@@ -146,15 +156,13 @@ class _QuizState extends State<Quiz> {
               ElevatedButton(
                 child: new Text("OK"),
                 onPressed: () {
-                  var count = 0;
-                  Navigator.popUntil(context, (route) {
-                    return count++ == 2;
-                  });
-                  Navigator.push(
+                  timer?.cancel();
+                  Navigator.pop(context);
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              PreResult(point)));
+                          builder: (context) => PreResult(point)));
+
                 },
               ),
             ],
@@ -178,14 +186,17 @@ class _QuizState extends State<Quiz> {
             padding: EdgeInsets.only(left: 20, bottom: 20),
             child: Text(
               'Câu hỏi ${i + 1}/' + lstQuest.length.toString(),
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
           ),
           Container(
               margin: EdgeInsets.all(20),
               child: Text(
                 lstQuest[i].qUESTIONTEXT.toString(),
-                style: TextStyle(fontSize: 25,color: Colors.white),
+                style: TextStyle(fontSize: 25, color: Colors.white),
               )),
           ...List.generate(
               lstAnswer!.length,
@@ -236,19 +247,17 @@ class _QuizState extends State<Quiz> {
     String second = pasreTime(duration.inSeconds.remainder(60));
     String hour = pasreTime(duration.inHours.remainder(60));
     return Scaffold(
-
       appBar: AppBar(
         title: Text('Quiz'),
         centerTitle: true,
       ),
-      body: Stack(
-        children:[
-          SvgPicture.asset("assets/image/bg.svg", fit: BoxFit.cover,width: MediaQuery.of(context).size.width),
-          Column(
+      body: Stack(children: [
+        Background(),
+        Column(
           children: [
             Container(
               height: (MediaQuery.of(context).size.height -
-                  appBar.preferredSize.height) *
+                      appBar.preferredSize.height) *
                   0.8 /
                   10,
               child: Align(
@@ -257,10 +266,7 @@ class _QuizState extends State<Quiz> {
                   children: [
                     Text(
                       '$hour:$minute:$second',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white
-                      ),
+                      style: TextStyle(fontSize: 15, color: Colors.white),
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 5),
@@ -271,7 +277,7 @@ class _QuizState extends State<Quiz> {
                         child: LinearProgressIndicator(
                           value: double.parse(time.toString()) / valProgress,
                           valueColor:
-                          AlwaysStoppedAnimation<Color>(Colors.lightGreen),
+                              AlwaysStoppedAnimation<Color>(Colors.lightGreen),
                           backgroundColor: Colors.black45,
                         ),
                       ),
@@ -282,7 +288,7 @@ class _QuizState extends State<Quiz> {
             ),
             Container(
               height: (MediaQuery.of(context).size.height -
-                  appBar.preferredSize.height) *
+                      appBar.preferredSize.height) *
                   6.5 /
                   10,
               padding: EdgeInsets.only(top: 20),
@@ -292,16 +298,20 @@ class _QuizState extends State<Quiz> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                    onPressed: (){
-                      controller.previousPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
+                    onPressed: () {
+                      controller.previousPage(
+                          duration: Duration(milliseconds: 400),
+                          curve: Curves.ease);
                     },
                     child: Text("Câu hỏi trước")),
                 Container(
-                  width: MediaQuery.of(context).size.width/5,
+                  width: MediaQuery.of(context).size.width / 5,
                 ),
                 ElevatedButton(
-                    onPressed: (){
-                      controller.nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
+                    onPressed: () {
+                      controller.nextPage(
+                          duration: Duration(milliseconds: 400),
+                          curve: Curves.ease);
                     },
                     child: Text("Câu hỏi tiếp"))
               ],
@@ -309,7 +319,7 @@ class _QuizState extends State<Quiz> {
             Container(
               margin: EdgeInsets.only(top: 25),
               height: (MediaQuery.of(context).size.height -
-                  appBar.preferredSize.height) *
+                      appBar.preferredSize.height) *
                   0.5 /
                   10,
               child: ElevatedButton(
@@ -318,13 +328,9 @@ class _QuizState extends State<Quiz> {
                     checkPoint();
                   }),
             ),
-
-
           ],
         ),
-
-        ]
-      ),
+      ]),
     );
   }
 }

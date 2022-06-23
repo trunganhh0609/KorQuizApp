@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import 'package:group_button/group_button.dart';
 import 'package:quiz_app/Controller/Controller.dart';
 import 'package:quiz_app/Network/GetData.dart';
+import 'package:quiz_app/Screen/Category.dart';
 import 'package:quiz_app/Screen/Quiz.dart';
 
 import '../Model/Question.dart';
+import '../Widget/Background.dart';
 
 class MyApp extends StatefulWidget {
   @override
@@ -18,19 +20,14 @@ class _MyAppState extends State<MyApp> {
   var count = 'null';
   Future<List<Q>> quest = Future(() => []);
   var controller = Get.put(Controller());
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Home App',
-        theme: ThemeData(
-          primaryColor: Colors.lightBlueAccent,
-        ),
-        routes: <String, WidgetBuilder>{
-          "home": (BuildContext context) => new MyApp(),
-        },
-        home: Scaffold(
+    return Scaffold(
           appBar: AppBar(
-            title: Text('Home App'),
+            //automaticallyImplyLeading: true,
+
+            title: Text('Word Test'),
             centerTitle: true,
           ),
           body: FutureBuilder<List<Q>>(
@@ -43,14 +40,14 @@ class _MyAppState extends State<MyApp> {
                 }
                 return Stack(
                   children: [
-                    SvgPicture.asset("assets/image/bg.svg", fit: BoxFit.cover,width: MediaQuery.of(context).size.width),
+                    Background(),
                     Container(
                       padding: EdgeInsets.only(top: 100.0),
                       alignment: Alignment.center,
                       child: Column(
                         children: [
                           const Text(
-                            'Chọn câu hỏi tối đa',
+                            'Chọn số lượng câu hỏi',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w500,
                             color: Colors.white),
@@ -73,6 +70,27 @@ class _MyAppState extends State<MyApp> {
                               ),
                             ),
                           ),
+                          const Text(
+                            'Chọn thời gian làm bài',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w500,
+                                color: Colors.white),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 30, bottom: 30),
+                            child: GroupButton(
+                              buttons: ['5', '10', '20', '50', '100'],
+                              onSelected: (val, i, selected) {
+                                setState(() {
+                                  controller.timeSet.value = int.parse(val.toString());
+                                });
+                              },
+                              options: GroupButtonOptions(
+                                borderRadius: BorderRadius.circular(10.0),
+                                unselectedColor: Colors.white60,
+                              ),
+                            ),
+                          ),
                           ElevatedButton(
                               onPressed: (count == 'null')
                                   ? null
@@ -81,7 +99,6 @@ class _MyAppState extends State<MyApp> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => Quiz()));
-                                      print(count);
                                     },
                               child: const Text('Làm Bài',style: TextStyle(color: Colors.white),)),
                         ],
@@ -94,6 +111,6 @@ class _MyAppState extends State<MyApp> {
               }
             },
           ),
-        ));
+        );
   }
 }

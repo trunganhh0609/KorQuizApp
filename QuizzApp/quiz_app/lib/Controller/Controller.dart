@@ -5,6 +5,8 @@ class Controller extends GetxController{
   List<Q>  questLst = <Q>[].obs;
   List<String> count = <String>[].obs;
   List<String> answerTxt= <String>[].obs;
-
+  RxString background = ''.obs;
+  List<String> lstBackgound = ['assets/image/img.png','assets/image/img1.jpg','assets/image/img2.png'];
+  RxInt timeSet = 0.obs;
 
 }

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:quiz_app/Controller/Controller.dart';
-import 'package:quiz_app/Screen/Home.dart';
+
+import '../Widget/Background.dart';
+import 'Home.dart';
 
 class Result extends StatelessWidget {
   final Controller ctrl = Get.put(Controller());
@@ -90,7 +92,7 @@ class Result extends StatelessWidget {
     var appBar = AppBar();
     final PageController pageController = PageController();
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async => true,
       child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -99,7 +101,7 @@ class Result extends StatelessWidget {
           ),
           body: Stack(
             children: [
-              SvgPicture.asset("assets/image/bg.svg", fit: BoxFit.cover,width: MediaQuery.of(context).size.width),
+              Background(),
               Column(
                 children: [
                   Container(
@@ -138,9 +140,12 @@ class Result extends StatelessWidget {
                     child: ElevatedButton(
                         onPressed: () {
                           ctrl.count.clear();
+
                           Navigator.of(context).pop();
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => MyApp()));
+                          //Navigator.popAndPushNamed(context, 'category');
+                          //Navigator.of(context).popUntil(ModalRoute.withName('wordtest'));
+                          // Navigator.pushReplacement(context,
+                          //     MaterialPageRoute(builder: (context) => MyApp()));
                         },
                         child: Text("Trở về home")),
                   )
