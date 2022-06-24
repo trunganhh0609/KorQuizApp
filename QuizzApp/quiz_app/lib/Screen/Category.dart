@@ -5,9 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:quiz_app/Model/CategoryModel.dart';
+import 'package:quiz_app/Network/GetData.dart';
 import 'package:quiz_app/Screen/Home.dart';
 import 'package:quiz_app/Screen/SettingBackground.dart';
 import 'package:quiz_app/Widget/Background.dart';
+import 'package:quiz_app/Widget/Setting.dart';
 
 import '../Controller/Controller.dart';
 
@@ -16,81 +19,66 @@ class Category extends StatefulWidget {
   _CategoryState createState() => _CategoryState();
 }
 
-class _CategoryState extends State<Category> with WidgetsBindingObserver{
+class _CategoryState extends State<Category> with WidgetsBindingObserver {
   var controller = Get.put(Controller());
   final AudioPlayer audioPlayer = AudioPlayer();
   var vol = 1.0;
   var mute = false;
-  final location = [
-  {'name':'English', 'location':Locale('en','US')},
-  {'name':'Tiếng Việt','location':Locale('vi','VN')}
-  ];
-  void initState(){
+  var setting = Setting();
+  Data data = Data();
+  void initState() {
     super.initState();
+    setAudio();
     WidgetsBinding.instance.addObserver(this);
     controller.background.value = controller.lstBackgound[0];
-    setAudio();
-
   }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if(state == AppLifecycleState.paused){
+    if (state == AppLifecycleState.paused) {
       audioPlayer.pause();
       print("Paused");
     }
-    if(state == AppLifecycleState.resumed){
+    if (state == AppLifecycleState.resumed) {
       audioPlayer.resume();
     }
   }
-  void dispose(){
+
+  void dispose() {
     super.dispose();
     print("fsdf");
     audioPlayer.stop();
   }
 
-  Future setAudio() async{
+  Future setAudio() async {
     audioPlayer.setReleaseMode(ReleaseMode.loop);
-    audioPlayer.setSource(AssetSource('sound/ukulele.mp3'));
-    return await audioPlayer.resume();
+    return await audioPlayer.play(AssetSource('sound/ukulele.mp3'));
   }
-  showDialogLanguage(BuildContext context){
-    showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          content: Container(
-            width: 300,
-            child: ListView.separated(
-              shrinkWrap: true,
-                itemBuilder:(context,index)
-                =>InkWell(
-                  onTap: (){
-                    updatelocation(location[index]['location'] as Locale, context);
-                  },
-                  child: Text(location[index]['name'].toString()),
-                ),
-                separatorBuilder: (context, index) => Divider(color: Colors.black),
-                itemCount: 2),
-          ),
-        )
-    );
-  }
-  updatelocation(Locale locale, BuildContext context){
-    Navigator.of(context).pop();
-    Get.updateLocale(locale);
-  }
+
   gotoTest(String type) {
     switch (type) {
-      case 'Word Test':
+      case 'WORD TEST':
+        {
+          controller.testType.value = type;
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => MyApp()));
+        }
+        break;
+      case 'Kiểm tra từ vựng':
         {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => MyApp()));
         }
         break;
-      case 'Write Test':
-        {}
+      case 'WRITE TEST':
+        {
+          controller.testType.value = type;
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => MyApp()));
+        }
         break;
-      case 'Read Test':
+      case 'READ TEST':
         {}
         break;
       default:
@@ -100,97 +88,85 @@ class _CategoryState extends State<Category> with WidgetsBindingObserver{
         break;
     }
   }
-  controlMute(){
 
-  }
   @override
   Widget build(BuildContext context) {
     final _random = Random();
-    List<String> lstCategory = ['Word Test', 'Write Test', 'Read Test'];
+    List<String> lstCategory = ['Test1'.tr, 'Test2'.tr, 'Test3'.tr];
+    List<CategoryModel>? tilteLst = <CategoryModel>[];
     return Scaffold(
       appBar: AppBar(
         title: Text('titleCategory'.tr),
         centerTitle: true,
-        actions: [
-          PopupMenuButton(
-              icon: Icon(Icons.settings),
-              itemBuilder: (context) => [
-                    PopupMenuItem(
-                        value: 'sound',
-                        child: Row(
-                          children: [
-                            Text("Sound"),
-                            Container(
-                              child: (mute == false)? Icon(Icons.volume_up,color: Colors.black45,): Icon(Icons.volume_off,color: Colors.black45,),)
-                          ],
-                        )
-                    ),
-                    const PopupMenuItem(
-                        value: 'background',
-                        child: Text("Background")
-                    ),
-                    const PopupMenuItem(
-                        value: 'language',
-                        child: Text("Language")
-                    )
-                  ],
-            onSelected: (String newValue){
-                  if(newValue == 'sound'){
-                    if(mute == false){
-
-                      audioPlayer.setVolume(0);
-                      mute = true;
-                    }else{
-                      mute=false;
-                      audioPlayer.setVolume(1);
-                    }
-
-                  }
-                  if(newValue == 'background'){
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => StBackground()));
-                  }
-                  if(newValue == 'language'){
-                    showDialogLanguage(context);
-                  }
-            },
-          )
-        ],
+        actions: [setting.setting(mute, audioPlayer, context)],
       ),
-      body: Stack(
-        children: [
-          Background(),
-          Container(
-            margin: EdgeInsets.only(top: 30, left: 10, right: 10),
-            child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
-                    childAspectRatio: 3 / 2,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20),
-                itemCount: lstCategory.length,
-                itemBuilder: (BuildContext ctx, index) {
-                  return InkWell(
-                    onTap: () {
-                      debugPrint(lstCategory[index]);
-                      gotoTest(lstCategory[index]);
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        lstCategory[index],
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w700),
+      body: FutureBuilder<List<CategoryModel>>(
+          future: data.category(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              tilteLst = snapshot.data;
+              return Stack(
+                children: [
+                  Background(),
+                  Column(
+                    children: [
+                      Center(
+                          child: Container(
+                              margin: EdgeInsets.only(top: 20),
+                              child: Text(
+                                'hello'.tr + '${controller.name.value}',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white),
+                              ))),
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 30, left: 10, right: 10),
+                          child: GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent: 200,
+                                      childAspectRatio: 3 / 2,
+                                      crossAxisSpacing: 20,
+                                      mainAxisSpacing: 20),
+                              itemCount: tilteLst?.length,
+                              itemBuilder: (BuildContext ctx, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    debugPrint(tilteLst![index].CATEGORYTITLE);
+                                    gotoTest(tilteLst![index]
+                                        .CATEGORYTITLE
+                                        .toString());
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: Colors.cyan,
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Text(
+                                      tilteLst![index]
+                                          .CATEGORYTITLE
+                                          .toString()
+                                          .toLowerCase(),
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  ),
+                                );
+                              }),
+                        ),
                       ),
-                      decoration: BoxDecoration(
-                          color: Colors.cyan,
-                          borderRadius: BorderRadius.circular(15)),
-                    ),
-                  );
-                }),
-          ),
-        ],
-      ),
+                    ],
+                  ),
+                ],
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          }),
     );
   }
 }

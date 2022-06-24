@@ -39,10 +39,10 @@ class ANSWER {
 
   ANSWER(
       {this.aNSWERID,
-        this.aNSWERCORRECT,
-        this.qUESTIONID,
-        this.aNSWERTEXT,
-        this.aNSWERORDINAL});
+      this.aNSWERCORRECT,
+      this.qUESTIONID,
+      this.aNSWERTEXT,
+      this.aNSWERORDINAL});
 
   ANSWER.fromJson(Map<String, dynamic> json) {
     aNSWERID = json['ANSWER_ID'];

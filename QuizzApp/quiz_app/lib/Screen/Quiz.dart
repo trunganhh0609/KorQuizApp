@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:quiz_app/Controller/Controller.dart';
+import 'package:quiz_app/Network/GetData.dart';
 import 'package:quiz_app/Screen/PreResult.dart';
 import 'package:quiz_app/Screen/Result.dart';
 
@@ -14,14 +15,15 @@ class Quiz extends StatefulWidget {
   _QuizState createState() => _QuizState();
 }
 
-class _QuizState extends State<Quiz>{
+class _QuizState extends State<Quiz> {
   var ctrl = Get.put(Controller());
   var point = 0;
   Duration duration = Duration();
   Timer? timer;
   var time;
   var valProgress;
-
+  var testTime;
+  Data _data = Data();
 
   @override
   void initState() {
@@ -34,9 +36,8 @@ class _QuizState extends State<Quiz>{
       ctrl.answerTxt.add("Null");
       ctrl.count.add("Null");
     }
-
-
   }
+
   @override
   void dispose() {
     super.dispose();
@@ -44,32 +45,48 @@ class _QuizState extends State<Quiz>{
     print("dispose");
   }
 
+  void saveInfTest() {
+    Duration timeDuration = Duration(seconds: testTime);
+    String minute = pasreTime(timeDuration.inMinutes.remainder(60));
+    String second = pasreTime(timeDuration.inSeconds.remainder(60));
+    String hour = pasreTime(timeDuration.inHours.remainder(60));
+    Map data = {
+      'NAME': ctrl.name.value,
+      'TYPE': ctrl.testType.value,
+      'TEST_TIME': '$hour:$minute:$second',
+      'NUM_QUEST': ctrl.questLst.length,
+      'POINT': (10 * point / ctrl.questLst.length).toDouble()
+    };
+    print(data);
+    _data.send(data);
+  }
+
   void startTimer() {
-    if(ctrl.timeSet.value == 0){
+    if (ctrl.timeSet.value == 0) {
       switch (ctrl.questLst.length) {
         case 10:
           {
-            valProgress = time = 60 * 5;
+            testTime = valProgress = time = 60 * 5;
           }
           break;
         case 20:
           {
-            valProgress = time = 60 * 10;
+            testTime = valProgress = time = 60 * 10;
           }
           break;
         case 50:
           {
-            valProgress = time = 60 * 25;
+            testTime = valProgress = time = 60 * 25;
           }
           break;
         case 100:
           {
-            valProgress = time = 60 * 50;
+            testTime = valProgress = time = 60 * 50;
           }
           break;
         case 200:
           {
-            valProgress = time = 60 * 100;
+            testTime = valProgress = time = 60 * 100;
           }
           break;
         default:
@@ -78,10 +95,9 @@ class _QuizState extends State<Quiz>{
           }
           break;
       }
-    }else{
-      valProgress = time = 60 * ctrl.timeSet.value;
+    } else {
+      testTime = valProgress = time = 60 * ctrl.timeSet.value;
     }
-
 
     timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
   }
@@ -99,15 +115,12 @@ class _QuizState extends State<Quiz>{
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("Đã hết thời gian làm bài"),
+            title: Text("time out".tr),
             actions: <Widget>[
               ElevatedButton(
-                child: new Text("OK"),
+                child: new Text("ok".tr),
                 onPressed: () {
-                  var count = 0;
-                  // Navigator.popUntil(context, (route) {
-                  //   return count++ == 2;
-                  // });
+                  saveInfTest();
                   timer?.cancel();
                   Navigator.pop(context);
                   Navigator.pushReplacement(
@@ -143,10 +156,10 @@ class _QuizState extends State<Quiz>{
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("Bạn có chắc chắn muốn nộp bài?"),
+            title: Text("title dialog".tr),
             actions: <Widget>[
               ElevatedButton(
-                child: new Text("Cancel"),
+                child: new Text("cancel".tr),
                 onPressed: () {
                   setState(() {
                     Navigator.of(context).pop();
@@ -154,15 +167,15 @@ class _QuizState extends State<Quiz>{
                 },
               ),
               ElevatedButton(
-                child: new Text("OK"),
+                child: new Text("ok".tr),
                 onPressed: () {
+                  saveInfTest();
                   timer?.cancel();
                   Navigator.pop(context);
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => PreResult(point)));
-
                 },
               ),
             ],
@@ -185,7 +198,7 @@ class _QuizState extends State<Quiz>{
             alignment: Alignment.topLeft,
             padding: EdgeInsets.only(left: 20, bottom: 20),
             child: Text(
-              'Câu hỏi ${i + 1}/' + lstQuest.length.toString(),
+              'question'.tr + '${i + 1}/' + lstQuest.length.toString(),
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -234,14 +247,14 @@ class _QuizState extends State<Quiz>{
     return list;
   }
 
+  String pasreTime(int n) {
+    return n.toString().padLeft(2, '0');
+  }
+
   @override
   Widget build(BuildContext context) {
     final PageController controller = PageController();
     var appBar = AppBar();
-
-    String pasreTime(int n) {
-      return n.toString().padLeft(2, '0');
-    }
 
     String minute = pasreTime(duration.inMinutes.remainder(60));
     String second = pasreTime(duration.inSeconds.remainder(60));
@@ -303,7 +316,7 @@ class _QuizState extends State<Quiz>{
                           duration: Duration(milliseconds: 400),
                           curve: Curves.ease);
                     },
-                    child: Text("Câu hỏi trước")),
+                    child: Text("previous".tr)),
                 Container(
                   width: MediaQuery.of(context).size.width / 5,
                 ),
@@ -313,7 +326,7 @@ class _QuizState extends State<Quiz>{
                           duration: Duration(milliseconds: 400),
                           curve: Curves.ease);
                     },
-                    child: Text("Câu hỏi tiếp"))
+                    child: Text("next".tr))
               ],
             ),
             Container(
@@ -323,7 +336,7 @@ class _QuizState extends State<Quiz>{
                   0.5 /
                   10,
               child: ElevatedButton(
-                  child: Text("Nộp bài"),
+                  child: Text("submit".tr),
                   onPressed: () {
                     checkPoint();
                   }),

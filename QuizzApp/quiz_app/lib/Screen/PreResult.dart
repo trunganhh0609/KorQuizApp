@@ -20,7 +20,7 @@ class PreResult extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: true,
-          title: Text('Result Page'),
+          title: Text('titleResult'.tr),
           centerTitle: true,
         ),
         body: Stack(
@@ -35,7 +35,7 @@ class PreResult extends StatelessWidget {
                         appBar.preferredSize.height) *
                         1 /
                         10,
-                    child: Text("Điểm của bạn: ${point * 10 / ctrl.questLst.length}",
+                    child: Text("your point".tr +"${point * 10 / ctrl.questLst.length}",
                         style: TextStyle(fontSize: 30, color: Colors.green))),
                 Text('${point.round()} / ${ctrl.questLst.length}',style: TextStyle(fontSize: 50,color: Colors.white)),
                 ElevatedButton(
@@ -46,7 +46,7 @@ class PreResult extends StatelessWidget {
                           builder: (context) =>
                           Result()));
                     },
-                    child: Text('Xem lại bài test'))
+                    child: Text('review'.tr))
               ],
             ),
           ],

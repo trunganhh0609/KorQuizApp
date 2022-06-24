@@ -24,7 +24,7 @@ class Result extends StatelessWidget {
             alignment: Alignment.topLeft,
             padding: EdgeInsets.only(left: 20, bottom: 20),
             child: Text(
-              'Câu hỏi ${i + 1}/' + lstQuest.length.toString(),
+              'question'.tr + '${i + 1}/' + lstQuest.length.toString(),
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
             ),
           ),
@@ -96,7 +96,7 @@ class Result extends StatelessWidget {
       child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            title: Text('Result Page'),
+            title: Text('titleReview'.tr),
             centerTitle: true,
           ),
           body: Stack(
@@ -120,7 +120,7 @@ class Result extends StatelessWidget {
                           onPressed: (){
                             pageController.previousPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
                           },
-                          child: Text("Câu hỏi trước")),
+                          child: Text("previous".tr)),
                       Container(
                         width: MediaQuery.of(context).size.width/5,
                       ),
@@ -128,7 +128,7 @@ class Result extends StatelessWidget {
                           onPressed: (){
                             pageController.nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
                           },
-                          child: Text("Câu hỏi tiếp "))
+                          child: Text("next".tr))
                     ],
                   ),
                   Container(
@@ -147,7 +147,7 @@ class Result extends StatelessWidget {
                           // Navigator.pushReplacement(context,
                           //     MaterialPageRoute(builder: (context) => MyApp()));
                         },
-                        child: Text("Trở về home")),
+                        child: Text("go home".tr)),
                   )
                 ],
               ),

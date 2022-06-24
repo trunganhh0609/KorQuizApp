@@ -7,6 +7,7 @@ import 'package:quiz_app/Network/GetData.dart';
 import 'package:quiz_app/Screen/Category.dart';
 import 'package:quiz_app/Screen/Home.dart';
 import 'package:quiz_app/Screen/Quiz.dart';
+import 'package:quiz_app/Screen/TypeName.dart';
 
 import '../Model/Question.dart';
 
@@ -25,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   gotoHomePage() async {
     await Future.delayed(Duration(seconds: 3), () {});
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => Category()));
+        context, MaterialPageRoute(builder: (context) => TypeName()));
   }
 
   @override
