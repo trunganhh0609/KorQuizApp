@@ -4,10 +4,8 @@ import 'package:get/get.dart';
 import 'package:quiz_app/Controller/Controller.dart';
 import 'package:quiz_app/Network/GetData.dart';
 import 'package:quiz_app/Screen/PreResult.dart';
-import 'package:quiz_app/Screen/Result.dart';
 
 import '../Widget/Background.dart';
-import 'Test.dart';
 
 class Quiz extends StatefulWidget {
   @override

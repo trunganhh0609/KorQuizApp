@@ -24,62 +24,69 @@ class Result extends StatelessWidget {
             padding: EdgeInsets.only(left: 20, bottom: 20),
             child: Text(
               'question'.tr + '${i + 1}/' + lstQuest.length.toString(),
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
           ),
           Container(
               margin: EdgeInsets.all(20),
               child: Text(
                 lstQuest[i].qUESTIONTEXT.toString(),
-                style: TextStyle(fontSize: 25,color: Colors.white),
+                style: TextStyle(fontSize: 25, color: Colors.white),
               )),
           ...List.generate(
               lstAnswer!.length,
-                  (index) => Container(
-                margin: EdgeInsets.all(2),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          minimumSize: Size(
-                              MediaQuery.of(context).size.width / 1.5, 55),
-                          primary:
-                          lstAnswer[index].aNSWERCORRECT == 1.0
-                                ? Colors.green
-                              : ctrl.answerTxt[i] == lstAnswer[index].aNSWERTEXT.toString() &&lstAnswer[index].aNSWERCORRECT != 1.0
-                                ? Colors.redAccent
-                                : Colors.white60
+              (index) => Container(
+                    margin: EdgeInsets.all(2),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              minimumSize: Size(
+                                  MediaQuery.of(context).size.width / 1.5, 55),
+                              primary: lstAnswer[index].aNSWERCORRECT == 1.0
+                                  ? Colors.green
+                                  : ctrl.answerTxt[i] ==
+                                              lstAnswer[index]
+                                                  .aNSWERTEXT
+                                                  .toString() &&
+                                          lstAnswer[index].aNSWERCORRECT != 1.0
+                                      ? Colors.redAccent
+                                      : Colors.white60),
+                          child: Row(
+                            children: [
+                              Text(
+                                lstAnswer[index].aNSWERTEXT.toString(),
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              Visibility(
+                                  visible: (ctrl.answerTxt[i] ==
+                                          lstAnswer[index]
+                                              .aNSWERTEXT
+                                              .toString())
+                                      ? true
+                                      : false,
+                                  child: (ctrl.answerTxt[i] ==
+                                              lstAnswer[index]
+                                                  .aNSWERTEXT
+                                                  .toString() &&
+                                          lstAnswer[index].aNSWERCORRECT == 1.0)
+                                      ? Icon(
+                                          Icons.check,
+                                          color: Colors.white,
+                                        )
+                                      : Text(""))
+                            ],
                           ),
-                      child: Row(
-                        children: [
-                          Text(
-                            lstAnswer[index].aNSWERTEXT.toString(),style: TextStyle(color: Colors.black),
-                          ),
-                          Visibility(
-                              visible: (ctrl.answerTxt[i] ==
-                                  lstAnswer[index].aNSWERTEXT.toString())
-                                  ? true
-                                  : false,
-                              child: (ctrl.answerTxt[i] ==
-                                  lstAnswer[index]
-                                      .aNSWERTEXT
-                                      .toString() &&
-                                  lstAnswer[index].aNSWERCORRECT == 1.0)
-                                  ? Icon(
-                                Icons.check,
-                                color: Colors.white,
-                              )
-                                  : Text(""))
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-
-                  ],
-                ),
-              )),
+                  )),
         ],
       ));
     }
@@ -105,27 +112,32 @@ class Result extends StatelessWidget {
                 children: [
                   Container(
                     height: (MediaQuery.of(context).size.height -
-                        appBar.preferredSize.height) *
+                            appBar.preferredSize.height) *
                         7 /
                         10,
                     padding: EdgeInsets.only(top: 20),
                     child: PageView(
-                        controller: pageController, children: makePage(context)),
+                        controller: pageController,
+                        children: makePage(context)),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
-                          onPressed: (){
-                            pageController.previousPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
+                          onPressed: () {
+                            pageController.previousPage(
+                                duration: Duration(milliseconds: 400),
+                                curve: Curves.ease);
                           },
                           child: Text("previous".tr)),
                       Container(
-                        width: MediaQuery.of(context).size.width/5,
+                        width: MediaQuery.of(context).size.width / 5,
                       ),
                       ElevatedButton(
-                          onPressed: (){
-                            pageController.nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
+                          onPressed: () {
+                            pageController.nextPage(
+                                duration: Duration(milliseconds: 400),
+                                curve: Curves.ease);
                           },
                           child: Text("next".tr))
                     ],
@@ -133,7 +145,7 @@ class Result extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     height: (MediaQuery.of(context).size.height -
-                        appBar.preferredSize.height) *
+                            appBar.preferredSize.height) *
                         1 /
                         10,
                     child: ElevatedButton(
