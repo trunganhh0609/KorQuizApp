@@ -1,14 +1,11 @@
 import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:quiz_app/Model/CategoryModel.dart';
 import 'package:quiz_app/Network/GetData.dart';
 import 'package:quiz_app/Screen/Home.dart';
-import 'package:quiz_app/Screen/SettingBackground.dart';
 import 'package:quiz_app/Widget/Background.dart';
 import 'package:quiz_app/Widget/Setting.dart';
 

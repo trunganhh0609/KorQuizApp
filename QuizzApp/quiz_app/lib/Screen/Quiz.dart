@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:quiz_app/Controller/Controller.dart';
 import 'package:quiz_app/Network/GetData.dart';
@@ -46,7 +45,8 @@ class _QuizState extends State<Quiz> {
   }
 
   void saveInfTest() {
-    Duration timeDuration = Duration(seconds: testTime);
+
+    Duration timeDuration = Duration(seconds: testTime-time);
     String minute = pasreTime(timeDuration.inMinutes.remainder(60));
     String second = pasreTime(timeDuration.inSeconds.remainder(60));
     String hour = pasreTime(timeDuration.inHours.remainder(60));
@@ -66,27 +66,27 @@ class _QuizState extends State<Quiz> {
       switch (ctrl.questLst.length) {
         case 10:
           {
-            testTime = valProgress = time = 60 * 5;
+            testTime = time = 60 * 5;
           }
           break;
         case 20:
           {
-            testTime = valProgress = time = 60 * 10;
+            testTime = time = 60 * 10;
           }
           break;
         case 50:
           {
-            testTime = valProgress = time = 60 * 25;
+            testTime = time = 60 * 25;
           }
           break;
         case 100:
           {
-            testTime = valProgress = time = 60 * 50;
+            testTime = time = 60 * 50;
           }
           break;
         case 200:
           {
-            testTime = valProgress = time = 60 * 100;
+            testTime = time = 60 * 100;
           }
           break;
         default:
@@ -96,7 +96,7 @@ class _QuizState extends State<Quiz> {
           break;
       }
     } else {
-      testTime = valProgress = time = 60 * ctrl.timeSet.value;
+      testTime = time = 60 * ctrl.timeSet.value;
     }
 
     timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
@@ -288,7 +288,7 @@ class _QuizState extends State<Quiz> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         child: LinearProgressIndicator(
-                          value: double.parse(time.toString()) / valProgress,
+                          value: double.parse(time.toString()) / testTime,
                           valueColor:
                               AlwaysStoppedAnimation<Color>(Colors.lightGreen),
                           backgroundColor: Colors.black45,

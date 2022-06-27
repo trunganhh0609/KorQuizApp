@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:quiz_app/Controller/Controller.dart';
 
@@ -57,7 +56,7 @@ class Result extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            lstAnswer[index].aNSWERTEXT.toString(),
+                            lstAnswer[index].aNSWERTEXT.toString(),style: TextStyle(color: Colors.black),
                           ),
                           Visibility(
                               visible: (ctrl.answerTxt[i] ==

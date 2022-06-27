@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
-import 'package:group_button/group_button.dart';
-import 'package:quiz_app/Controller/Controller.dart';
-import 'package:quiz_app/Network/GetData.dart';
-import 'package:quiz_app/Screen/Category.dart';
-import 'package:quiz_app/Screen/Home.dart';
-import 'package:quiz_app/Screen/Quiz.dart';
+
 import 'package:quiz_app/Screen/TypeName.dart';
 
-import '../Model/Question.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
