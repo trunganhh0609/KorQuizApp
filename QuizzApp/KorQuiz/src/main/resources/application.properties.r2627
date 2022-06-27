@@ -11,15 +11,15 @@ mybatis.mapper-locations=classpath:mapping/*.xml
 mybatis.type-aliases-package=com.beilin.entity
 #Naming method of open hump
 mybatis.configuration.map-underscore-to-camel-case=true
-
+ 
 #Configure Mysql connection
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-spring.datasource.url = jdbc:mysql://127.0.0.1:3308/korq_quiz
+spring.datasource.url = jdbc:mysql://127.0.0.1:3306/korq_quiz
 
 #spring.datasource.driver-class-name=net.sf.log4jdbc.sql.jdbcapi.DriverSpy
 #spring.datasource.url = jdbc:log4jdbc:mysql://127.0.0.1:3306/korq_quiz
 spring.datasource.username = root
-spring.datasource.password = 123456
+spring.datasource.password = 1234
 
 #show sql
 logging.level.org.springframework=WARN

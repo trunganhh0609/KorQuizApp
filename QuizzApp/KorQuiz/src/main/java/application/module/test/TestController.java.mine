@@ -19,33 +19,23 @@ import javax.servlet.http.HttpServletRequest;
 public class TestController {
 	@Autowired
 	TestService service;
-
+	
 	@RequestMapping("get")
 	public ResponseEntity<?> get(){
-
+		
 		return ResponseEntity.ok(service.get());
 	}
-
+	
 	@RequestMapping("insertQuestion")
 	public ResponseEntity<?> insertQuestion(){
 		service.insertQuestion();
 		return ResponseEntity.ok("hello");
 	}
-
+	
 	@RequestMapping("randomTest")
 	public ResponseEntity<?> randomTest(@RequestBody Map params){
 		params.size();
 		return ResponseEntity.ok(service.randomTest(params));
 	}
-
-	@RequestMapping("category")
-	public ResponseEntity<?> getCategory(){
-		return ResponseEntity.ok(service.getCategory());
-	}
-	@RequestMapping("insertResultTest")
-	public ResponseEntity<?> insertResultTest(@RequestBody Map param){
-		service.insertResultTest(param);
-		return ResponseEntity.ok("ok");
-	}
-
+	
 }

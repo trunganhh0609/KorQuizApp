@@ -8,7 +8,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="get" parameterType="map" resultType="HashMap">
 		SELECT p.* from korq_question p
 	</select>
-	
+
+	<select id="getCategory" resultType="map">
+		SELECT * FROM korq_quiz.korq_category;
+	</select>
+
+	<insert id="insertResultTest" parameterType="map">
+		INSERT INTO korq_result_test
+		(
+		NAME_USER, TIME, NUM_QUEST, POINT, TYPE, SUBMIT_AT
+		)
+		VALUES
+		(
+		#{NAME},
+		#{TEST_TIME},
+		#{NUM_QUEST},
+		#{POINT},
+		#{TYPE},
+		now()
+
+		)
+
+	</insert>
+
 	<insert id="insertQuestion" parameterType="map" useGeneratedKeys="true"  keyProperty="QUESTION_ID">
 			INSERT INTO korq_question
 			(
@@ -37,6 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{ANSWER_ORDINAL}				
 			)
 	</insert>
+
 	<select id="randomTest" parameterType="map" resultType="HashMap">
 		SELECT kq.*
 		

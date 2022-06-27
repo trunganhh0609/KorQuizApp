@@ -19,7 +19,14 @@ public class TestService {
 	public List get() {
 		return dao.get();
 	}
-	
+	public List getCategory(){
+		List lstCategory = dao.getCategory();
+		return lstCategory;
+	}
+
+	public void insertResultTest(Map<String, Object> param){
+		dao.insertResultTest(param);
+	}
 	public void insertQuestion() {
 		try {
 			for(int j =30;j<1000;j++) {
