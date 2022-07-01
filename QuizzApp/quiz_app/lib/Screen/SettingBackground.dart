@@ -28,32 +28,39 @@ class _StBackgroundState extends State<StBackground> {
       ),
       body: Column(
         children: [
-          ...List.generate(
-              controller.lstBackgound.length,
-                  (index) => InkWell(
-                    child: Center(
-                      child: Container(
-                        margin: EdgeInsets.all(10),
-                        width: 150,
-                        height: 30,
-                        color: Colors.cyan,
-                        child: Center(child: Text("Back ground $index")),
-                      ),
-                    ),
-                    onTap: (){
-                      setState((){
-                        controller.background.value = controller.lstBackgound[index];
-                        print(controller.background.value);
-                      });
-                    },
-                  )
-
-          ),
           Expanded(
-              child: Image.asset(controller.background.value, fit: BoxFit.cover,width: MediaQuery.of(context).size.width)),
-
+              flex: 6,
+              child: Container(
+                margin: EdgeInsets.only(bottom: 20),
+                  child: Image.asset(controller.background.value, fit: BoxFit.cover,width: MediaQuery.of(context).size.width))),
+          Expanded(
+            flex: 1,
+            child: GridView.builder(
+                    gridDelegate:
+                    const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 150,
+                        childAspectRatio: 3 / 2,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 20),
+                    itemCount: controller.lstBackgound.length,
+                    itemBuilder: (BuildContext ctx, index) {
+                      return InkWell(
+                        child: Image.asset(controller.lstBackgound[index],fit: BoxFit.cover,),
+                        onTap: (){
+                          setState((){
+                            controller.background.value = controller.lstBackgound[index];
+                            print(controller.background.value);
+                          });
+                        },
+                      );
+                    }),
+          ),
         ],
-      )
+      ),
+
+
+
+
     );
   }
 }

@@ -3,9 +3,7 @@ import 'package:get/get.dart';
 import 'package:group_button/group_button.dart';
 import 'package:quiz_app/Controller/Controller.dart';
 import 'package:quiz_app/Network/GetData.dart';
-import 'package:quiz_app/Screen/Category.dart';
 import 'package:quiz_app/Screen/Quiz.dart';
-import 'package:quiz_app/Widget/Setting.dart';
 
 import '../Model/Question.dart';
 import '../Widget/Background.dart';
@@ -22,12 +20,26 @@ class _MyAppState extends State<MyApp> {
   var controller = Get.put(Controller());
 
   @override
+  void initState() {
+    super.initState();
+  }
+  getTestType(String text){
+    String temp = text.trim();
+    var index;
+    for(int i = 0 ; i < temp.length; i++){
+      if(temp[i] == ' '){
+        index = i;
+      }
+    }
+    return temp.substring(0, index).trim().toUpperCase();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         //automaticallyImplyLeading: true,
 
-        title: Text('Test1'.tr),
+        title: Text(controller.testType.value.tr),
         centerTitle: true,
       ),
       body: FutureBuilder<List<Q>>(
@@ -61,8 +73,8 @@ class _MyAppState extends State<MyApp> {
                             setState(() {
                               count = val.toString();
                               var temp = int.tryParse(count);
-                              quest = data.getTest(temp!);
-                              print(count);
+                              var _testType = getTestType(controller.testType.value);
+                              quest = data.getTest(temp!, _testType);
                             });
                           },
                           options: GroupButtonOptions(
@@ -73,13 +85,13 @@ class _MyAppState extends State<MyApp> {
                       ),
                       Text(
                         'time'.tr,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
                             color: Colors.white),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 30, bottom: 30),
+                        margin: const EdgeInsets.only(top: 30, bottom: 30),
                         child: GroupButton(
                           buttons: ['5', '10', '20', '50', '100'],
                           onSelected: (val, i, selected) {

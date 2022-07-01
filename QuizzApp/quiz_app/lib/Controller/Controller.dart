@@ -16,7 +16,9 @@ class Controller extends GetxController {
   RxInt timeSet = 0.obs;
   RxString name = ''.obs;
   RxString testType = ''.obs;
+  late Map user ;
   AudioPlayer audioPlayer = AudioPlayer();
   var vol = 1.0;
   var mute = false;
+  var resultTestList;
 }

@@ -97,73 +97,68 @@ class Result extends StatelessWidget {
   Widget build(BuildContext context) {
     var appBar = AppBar();
     final PageController pageController = PageController();
-    return WillPopScope(
-      onWillPop: () async => true,
-      child: Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            title: Text('titleReview'.tr),
-            centerTitle: true,
-          ),
-          body: Stack(
-            children: [
-              Background(),
-              Column(
-                children: [
-                  Container(
-                    height: (MediaQuery.of(context).size.height -
-                            appBar.preferredSize.height) *
-                        7 /
-                        10,
-                    padding: EdgeInsets.only(top: 20),
-                    child: PageView(
-                        controller: pageController,
-                        children: makePage(context)),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            pageController.previousPage(
-                                duration: Duration(milliseconds: 400),
-                                curve: Curves.ease);
-                          },
-                          child: Text("previous".tr)),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 5,
-                      ),
-                      ElevatedButton(
-                          onPressed: () {
-                            pageController.nextPage(
-                                duration: Duration(milliseconds: 400),
-                                curve: Curves.ease);
-                          },
-                          child: Text("next".tr))
-                    ],
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    height: (MediaQuery.of(context).size.height -
-                            appBar.preferredSize.height) *
-                        1 /
-                        10,
-                    child: ElevatedButton(
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('titleReview'.tr),
+          centerTitle: true,
+        ),
+        body: Stack(
+          children: [
+            Background(),
+            Column(
+              children: [
+                Container(
+                  height: (MediaQuery.of(context).size.height -
+                          appBar.preferredSize.height) *
+                      7 /
+                      10,
+                  padding: EdgeInsets.only(top: 20),
+                  child: PageView(
+                      controller: pageController,
+                      children: makePage(context)),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
                         onPressed: () {
-                          ctrl.count.clear();
-
-                          Navigator.of(context).pop();
-                          //Navigator.popAndPushNamed(context, 'category');
-                          //Navigator.of(context).popUntil(ModalRoute.withName('wordtest'));
-                          // Navigator.pushReplacement(context,
-                          //     MaterialPageRoute(builder: (context) => MyApp()));
+                          pageController.previousPage(
+                              duration: Duration(milliseconds: 400),
+                              curve: Curves.ease);
                         },
-                        child: Text("go home".tr)),
-                  )
-                ],
-              ),
-            ],
-          )),
-    );
+                        child: Text("previous".tr)),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 5,
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          pageController.nextPage(
+                              duration: Duration(milliseconds: 400),
+                              curve: Curves.ease);
+                        },
+                        child: Text("next".tr))
+                  ],
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  height: (MediaQuery.of(context).size.height -
+                          appBar.preferredSize.height) *
+                      1 /
+                      10,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        ctrl.count.clear();
+                        Navigator.of(context).pop();
+                        //Navigator.popAndPushNamed(context, 'category');
+                        //Navigator.of(context).popUntil(ModalRoute.withName('wordtest'));
+                        // Navigator.pushReplacement(context,
+                        //     MaterialPageRoute(builder: (context) => MyApp()));
+                      },
+                      child: Text("go home".tr)),
+                )
+              ],
+            ),
+          ],
+        ));
   }
 }

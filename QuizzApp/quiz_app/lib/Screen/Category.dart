@@ -7,6 +7,7 @@ import 'package:quiz_app/Model/CategoryModel.dart';
 import 'package:quiz_app/Network/GetData.dart';
 import 'package:quiz_app/Screen/Home.dart';
 import 'package:quiz_app/Widget/Background.dart';
+import 'package:quiz_app/Widget/More.dart';
 import 'package:quiz_app/Widget/Setting.dart';
 
 import '../Controller/Controller.dart';
@@ -18,10 +19,6 @@ class Category extends StatefulWidget {
 
 class _CategoryState extends State<Category> with WidgetsBindingObserver {
   var controller = Get.put(Controller());
-  final AudioPlayer audioPlayer = AudioPlayer();
-  var vol = 1.0;
-  var mute = false;
-  var setting = Setting();
   Data data = Data();
   void initState() {
     super.initState();
@@ -34,68 +31,43 @@ class _CategoryState extends State<Category> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.paused) {
-      audioPlayer.pause();
+      controller.audioPlayer.pause();
       print("Paused");
     }
     if (state == AppLifecycleState.resumed) {
-      audioPlayer.resume();
+      controller.audioPlayer.resume();
     }
   }
 
   void dispose() {
     super.dispose();
     print("fsdf");
-    audioPlayer.stop();
   }
 
   Future setAudio() async {
-    audioPlayer.setReleaseMode(ReleaseMode.loop);
-    return await audioPlayer.play(AssetSource('sound/ukulele.mp3'));
+    controller.audioPlayer.setReleaseMode(ReleaseMode.loop);
+    return await controller.audioPlayer.play(AssetSource('sound/ukulele.mp3'));
   }
 
   gotoTest(String type) {
-    switch (type) {
-      case 'WORD TEST':
-        {
-          controller.testType.value = type;
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MyApp()));
-        }
-        break;
-      case 'Kiểm tra từ vựng':
-        {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MyApp()));
-        }
-        break;
-      case 'WRITE TEST':
-        {
-          controller.testType.value = type;
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MyApp()));
-        }
-        break;
-      case 'READ TEST':
-        {}
-        break;
-      default:
-        {
-          print("This is default case");
-        }
-        break;
-    }
+    controller.testType.value = type;
+    controller.timeSet.value = 0;
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MyApp()));
+
   }
 
   @override
   Widget build(BuildContext context) {
-    final _random = Random();
-    List<String> lstCategory = ['Test1'.tr, 'Test2'.tr, 'Test3'.tr];
     List<CategoryModel>? tilteLst = <CategoryModel>[];
     return Scaffold(
       appBar: AppBar(
         title: Text('titleCategory'.tr),
         centerTitle: true,
-        actions: [setting.setting(mute, audioPlayer, context)],
+        actions: [
+          Setting(),
+          More()
+        ],
       ),
       body: FutureBuilder<List<CategoryModel>>(
           future: data.category(),
@@ -109,17 +81,17 @@ class _CategoryState extends State<Category> with WidgetsBindingObserver {
                     children: [
                       Center(
                           child: Container(
-                              margin: EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 20),
                               child: Text(
-                                'hello'.tr + '${controller.name.value}',
-                                style: TextStyle(
+                                '${'hello'.tr}${controller.user.values.elementAt(1)}',
+                                style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.white),
                               ))),
                       Expanded(
                         child: Container(
-                          margin: EdgeInsets.only(top: 30, left: 10, right: 10),
+                          margin: const EdgeInsets.only(top: 30, left: 10, right: 10),
                           child: GridView.builder(
                               gridDelegate:
                                   const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -134,7 +106,7 @@ class _CategoryState extends State<Category> with WidgetsBindingObserver {
                                     debugPrint(tilteLst![index].CATEGORYTITLE);
                                     gotoTest(tilteLst![index]
                                         .CATEGORYTITLE
-                                        .toString());
+                                        .toString().toLowerCase());
                                   },
                                   child: Container(
                                     alignment: Alignment.center,
@@ -146,8 +118,8 @@ class _CategoryState extends State<Category> with WidgetsBindingObserver {
                                       tilteLst![index]
                                           .CATEGORYTITLE
                                           .toString()
-                                          .toLowerCase(),
-                                      style: TextStyle(
+                                          .toLowerCase().tr,
+                                      style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w700),
                                     ),
@@ -161,7 +133,7 @@ class _CategoryState extends State<Category> with WidgetsBindingObserver {
                 ],
               );
             } else {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: const CircularProgressIndicator());
             }
           }),
     );

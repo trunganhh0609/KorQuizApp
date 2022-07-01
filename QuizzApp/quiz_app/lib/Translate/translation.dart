@@ -11,15 +11,16 @@ class TranslationApp extends Translations {
           'type name': 'What is your name?',
           'label text': 'Enter your name',
           'hello': 'Hello ',
-          'Test1': 'Word Test',
-          'Test2': 'Write Test',
-          'Test3': 'Read Test',
+          'word test': 'Word Test',
+          'write test': 'Write Test',
+          'read test': 'Read Test',
+          'listen test': 'Listen Test',
           'count quest': 'Choose the number of questions',
           'time': 'Choose a time to do the test',
           'go': 'Let\'s go',
-          'next': 'next',
-          'previous': 'previous',
-          'submit': 'submit',
+          'next': 'Next',
+          'previous': 'Previous',
+          'submit': 'Submit',
           'title dialog': 'Are you sure to submit?',
           'time out': 'Time out!',
           'cancel': 'Cancel',
@@ -30,7 +31,10 @@ class TranslationApp extends Translations {
           'question': 'Question',
           'sound': 'Sound',
           'background': 'Theme',
-          'language': 'Language'
+          'language': 'Language',
+          'logout': 'Logout',
+          'statistical': 'Statistical this week',
+          'information': 'Information'
         },
         'vi_VN': {
           'titleCategory': 'Danh mục',
@@ -38,10 +42,11 @@ class TranslationApp extends Translations {
           'titleReview': 'Xem lại bài',
           'type name': 'Tên của bạn là gì?',
           'hello': 'Xin chào ',
-          'label text': 'Nhập tên cảu bạn',
-          'Test1': 'Kiểm tra từ vựng',
-          'Test2': 'Kiểm tra viết',
-          'Test3': 'Kiểm tra đọc',
+          'label text': 'Nhập tên của bạn',
+          'word test': 'Kiểm tra từ vựng',
+          'write test': 'Kiểm tra viết',
+          'read test': 'Kiểm tra đọc',
+          'listen test': 'Kiểm tra nghe',
           'count quest': 'Chọn số lượng câu hỏi',
           'time': 'Chọn thời gian làm bài',
           'go': 'Bắt đầu',
@@ -58,7 +63,10 @@ class TranslationApp extends Translations {
           'question': 'Câu hỏi ',
           'sound': 'Âm thanh',
           'background': 'Giao diện',
-          'language': 'Ngôn ngữ'
+          'language': 'Ngôn ngữ',
+          'logout': 'Đăng xuất',
+          'statistical': 'Thống kê tuần này',
+          'information': 'Thông tin cá nhân'
         }
       };
 }

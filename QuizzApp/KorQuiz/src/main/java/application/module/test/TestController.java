@@ -25,7 +25,11 @@ public class TestController {
 
 		return ResponseEntity.ok(service.get());
 	}
+	@RequestMapping("getUser")
+	public ResponseEntity<?> getUser(@RequestBody Map param){
 
+		return ResponseEntity.ok(service.getUser(param));
+	}
 	@RequestMapping("insertQuestion")
 	public ResponseEntity<?> insertQuestion(){
 		service.insertQuestion();
@@ -48,4 +52,8 @@ public class TestController {
 		return ResponseEntity.ok("ok");
 	}
 
+	@RequestMapping("resultCurrent")
+	public ResponseEntity<?> getResultCurrent(@RequestBody Map param){
+		return ResponseEntity.ok(service.getResultCurrent(param));
+	}
 }

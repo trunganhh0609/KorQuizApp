@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quiz_app/Controller/Controller.dart';
+import 'package:quiz_app/Network/GetData.dart';
 import 'package:quiz_app/Screen/Category.dart';
 
 import '../Widget/Background.dart';
@@ -13,6 +14,11 @@ class TypeName extends StatefulWidget {
 class _TypeNameState extends State<TypeName> {
   var controller = Get.put(Controller());
   TextEditingController nameEditingController = TextEditingController();
+  Data _data = Data();
+
+  infUser(Map id) async{
+    controller.user = await _data.getUser(id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +26,7 @@ class _TypeNameState extends State<TypeName> {
     return Scaffold(
       body: Stack(
         children: [
-          Background(),
+          Image.asset('assets/image/img.png', fit: BoxFit.cover,width: MediaQuery.of(context).size.width),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -52,10 +58,16 @@ class _TypeNameState extends State<TypeName> {
                 Container(
                   margin: EdgeInsets.only(top: 30),
                   child: ElevatedButton(
-                    child: Text('submit'.tr),
+                    child: Text('submit'),
                     onPressed: () {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => Category()));
+
+                      Map id = {
+                        'USER_ID': int.parse(controller.name.value),
+                      };
+                      infUser(id);
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => Category()));
+
                     },
                   ),
                 )

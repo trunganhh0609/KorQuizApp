@@ -43,13 +43,12 @@ class _QuizState extends State<Quiz> {
   }
 
   void saveInfTest() {
-
-    Duration timeDuration = Duration(seconds: testTime-time);
+    Duration timeDuration = Duration(seconds: testTime - time);
     String minute = pasreTime(timeDuration.inMinutes.remainder(60));
     String second = pasreTime(timeDuration.inSeconds.remainder(60));
     String hour = pasreTime(timeDuration.inHours.remainder(60));
     Map data = {
-      'NAME': ctrl.name.value,
+      'USER_ID': ctrl.user.values.elementAt(0),
       'TYPE': ctrl.testType.value,
       'TEST_TIME': '$hour:$minute:$second',
       'NUM_QUEST': ctrl.questLst.length,
@@ -116,7 +115,7 @@ class _QuizState extends State<Quiz> {
             title: Text("time out".tr),
             actions: <Widget>[
               ElevatedButton(
-                child: new Text("ok".tr),
+                child: Text("ok".tr),
                 onPressed: () {
                   saveInfTest();
                   timer?.cancel();
@@ -157,7 +156,7 @@ class _QuizState extends State<Quiz> {
             title: Text("title dialog".tr),
             actions: <Widget>[
               ElevatedButton(
-                child: new Text("cancel".tr),
+                child: Text("cancel".tr),
                 onPressed: () {
                   setState(() {
                     Navigator.of(context).pop();
@@ -165,7 +164,7 @@ class _QuizState extends State<Quiz> {
                 },
               ),
               ElevatedButton(
-                child: new Text("ok".tr),
+                child: Text("ok".tr),
                 onPressed: () {
                   saveInfTest();
                   timer?.cancel();
@@ -257,91 +256,109 @@ class _QuizState extends State<Quiz> {
     String minute = pasreTime(duration.inMinutes.remainder(60));
     String second = pasreTime(duration.inSeconds.remainder(60));
     String hour = pasreTime(duration.inHours.remainder(60));
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Quiz'),
-        centerTitle: true,
-      ),
-      body: Stack(children: [
-        Background(),
-        Column(
-          children: [
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height) *
-                  0.8 /
-                  10,
-              child: Align(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '$hour:$minute:$second',
-                      style: TextStyle(fontSize: 15, color: Colors.white),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      width: MediaQuery.of(context).size.width * 7 / 10,
-                      height: 10,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        child: LinearProgressIndicator(
-                          value: double.parse(time.toString()) / testTime,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.lightGreen),
-                          backgroundColor: Colors.black45,
+    if(ctrl.questLst.length == 0){
+      timer?.cancel();
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.adb,size: 100,color: Colors.black45),
+              Text("No Data",style: TextStyle(fontSize: 40),)
+            ],
+          ),
+        ),
+      );
+    }
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text('Quiz'),
+          centerTitle: true,
+        ),
+        body: Stack(children: [
+          Background(),
+          Column(
+            children: [
+              Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height) *
+                    0.8 /
+                    10,
+                child: Align(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '$hour:$minute:$second',
+                        style: TextStyle(fontSize: 15, color: Colors.white),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 5),
+                        width: MediaQuery.of(context).size.width * 7 / 10,
+                        height: 10,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          child: LinearProgressIndicator(
+                            value: double.parse(time.toString()) / testTime,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.lightGreen),
+                            backgroundColor: Colors.black45,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height) *
-                  6.5 /
-                  10,
-              padding: EdgeInsets.only(top: 20),
-              child: PageView(controller: controller, children: makePage()),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
+              Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height) *
+                    6.5 /
+                    10,
+                padding: EdgeInsets.only(top: 20),
+                child: PageView(controller: controller, children: makePage()),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        controller.previousPage(
+                            duration: Duration(milliseconds: 400),
+                            curve: Curves.ease);
+                      },
+                      child: Text("previous".tr)),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 5,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        controller.nextPage(
+                            duration: Duration(milliseconds: 400),
+                            curve: Curves.ease);
+                      },
+                      child: Text("next".tr))
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 25),
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height) *
+                    0.5 /
+                    10,
+                child: ElevatedButton(
+                    child: Text("submit".tr),
                     onPressed: () {
-                      controller.previousPage(
-                          duration: Duration(milliseconds: 400),
-                          curve: Curves.ease);
-                    },
-                    child: Text("previous".tr)),
-                Container(
-                  width: MediaQuery.of(context).size.width / 5,
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      controller.nextPage(
-                          duration: Duration(milliseconds: 400),
-                          curve: Curves.ease);
-                    },
-                    child: Text("next".tr))
-              ],
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 25),
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height) *
-                  0.5 /
-                  10,
-              child: ElevatedButton(
-                  child: Text("submit".tr),
-                  onPressed: () {
-                    checkPoint();
-                  }),
-            ),
-          ],
-        ),
-      ]),
+                      checkPoint();
+                    }),
+              ),
+            ],
+          ),
+        ]),
+      ),
     );
   }
 }

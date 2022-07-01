@@ -6,6 +6,10 @@ import java.util.Map;
 public interface TestMapper {
 	List get();
 	List getCategory();
+
+	List getResultCurrent(Map<String, Object> param);
+
+	Object getUser (Map<String, Object> param);
 	void insertAnswer(Map<String, Object> param);
 	void insertResultTest(Map<String, Object> param);
 	void insertQuestion(Map<String, Object> param);

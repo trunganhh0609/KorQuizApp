@@ -23,7 +23,12 @@ public class TestService {
 		List lstCategory = dao.getCategory();
 		return lstCategory;
 	}
-
+	public List getResultCurrent(Map<String, Object> id){
+		return dao.getResultCurrent(id);
+	}
+	public Object getUser(Map<String, Object> id){
+		return dao.getUser(id);
+	}
 	public void insertResultTest(Map<String, Object> param){
 		dao.insertResultTest(param);
 	}

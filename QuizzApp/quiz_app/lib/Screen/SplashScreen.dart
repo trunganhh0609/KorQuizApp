@@ -29,18 +29,14 @@ class _SplashScreenState extends State<SplashScreen> {
           primaryColor: Colors.lightBlueAccent,
         ),
         home: Scaffold(
-            appBar: AppBar(
-              title: Text('Home App'),
-              centerTitle: true,
-            ),
             body: Stack(
               children: [
                 Image.asset('assets/image/img.png', fit: BoxFit.cover,width: MediaQuery.of(context).size.width),
                 Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("KorQuiz",style: TextStyle(fontSize: 30,color: Colors.white)),
+                    children: const [
+                      Text("KorQuiz",style: TextStyle(fontSize: 40,color: Colors.white,fontWeight: FontWeight.w500)),
                     ],
                   ),
                 ),

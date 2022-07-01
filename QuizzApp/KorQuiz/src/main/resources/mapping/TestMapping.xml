@@ -9,18 +9,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT p.* from korq_question p
 	</select>
 
+	<select id="getUser" resultType="map">
+		SELECT * FROM korq_quiz.korq_user WHERE USER_ID = #{USER_ID} ;
+	</select>
+
 	<select id="getCategory" resultType="map">
 		SELECT * FROM korq_quiz.korq_category;
 	</select>
 
+	<select id="getResultCurrent" resultType="map" parameterType="map">
+		SELECT RESULT_ID,
+		USER_ID,
+		TIME,
+		NUM_QUEST,
+		POINT,
+		TYPE,
+		DATE_FORMAT(SUBMIT_AT, "%w") as SUBMIT_AT
+		FROM korq_quiz.korq_result_test
+		WHERE USER_ID = #{USER_ID}
+		AND WEEK(SUBMIT_AT,1) = WEEK(CURDATE()) order by korq_quiz.korq_result_test.SUBMIT_AT ASC
+	</select>
 	<insert id="insertResultTest" parameterType="map">
 		INSERT INTO korq_result_test
 		(
-		NAME_USER, TIME, NUM_QUEST, POINT, TYPE, SUBMIT_AT
+		USER_ID, TIME, NUM_QUEST, POINT, TYPE, SUBMIT_AT
 		)
 		VALUES
 		(
-		#{NAME},
+		#{USER_ID},
 		#{TEST_TIME},
 		#{NUM_QUEST},
 		#{POINT},
@@ -61,7 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 
 	<select id="randomTest" parameterType="map" resultType="HashMap">
-		SELECT kq.*
+		SELECT DISTINCT  kq.*
 		
 		FROM korq_question kq
 		INNER JOIN korq_question_answer kqa ON kq.QUESTION_ID = kqa.QUESTION_ID
